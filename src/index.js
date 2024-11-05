@@ -10,7 +10,7 @@ app.use(routes);
 
 (async () => {
     await connectToDatabase();
-    await initialTestData();
+    // await initialTestData();
     console.log("Base de datos sincronizada");
 })();
 
