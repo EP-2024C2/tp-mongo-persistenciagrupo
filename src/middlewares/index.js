@@ -4,7 +4,7 @@ const validateId = (Model) => {
   return async (req, res, next) => {
     try {
       const { id } = req.params;
-      const _id = new mongoose.Types.ObjectId(+id);
+      const _id = new mongoose.Types.ObjectId(id);
       const model = await Model.findById(_id);
       const modelName = Model.modelName;
 

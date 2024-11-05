@@ -18,3 +18,11 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: web1234
       ME_CONFIG_MONGODB_URL: mongodb://admin:admin1234@mongodb:27017/
       ME_CONFIG_BASICAUTH: "false"
+  app:
+    image: test/tpmongo:1.0
+    ports:
+      - 3000:3000
+    environment:
+      MONGO_URL: mongodb://admin:admin1234@mongodb:27017/tu_base_de_datos
+    depends_on:
+      - mongodb

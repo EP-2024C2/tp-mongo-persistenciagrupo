@@ -51,10 +51,9 @@ const deleteFabricante = async (req, res) => {
 
 const getProductosByFabricanteId = async (req, res) => {
   try {
-    const fabricante = await Fabricante.findById(req.params.id, {
-      include: Producto,
-      as: "productos",
-    });
+    const productos = await Producto.find({ fabricanteId: req.params.id });
+    const fabricante = await Fabricante.findById(req.params.id);
+    fabricante.productos = productos;
     res.json(fabricante);
   } catch (error) {
     res.status(500).json({ message: error.message });
