@@ -1,34 +1,36 @@
 const { Router } = require("express");
 const fabricanteController = require("../controllers/fabricante.controllers");
 const middleware = require("../middlewares");
+const { Fabricante } = require("../models");
+const fabricanteSchema = require("../schemas/producto.schema");
 
 const manufacturerRoutes = Router();
 
 manufacturerRoutes.get("/", fabricanteController.getAllFabricantes);
 manufacturerRoutes.get(
   "/:id",
-  middleware.validateId,
+  middleware.validateId(Fabricante),
   fabricanteController.getFabricanteById
 );
 manufacturerRoutes.post(
   "/",
-  middleware.validateSchema,
+  middleware.validateSchema(fabricanteSchema),
   fabricanteController.createFabricante
 );
 manufacturerRoutes.put(
   "/:id",
-  middleware.validateSchema,
-  middleware.validateId,
+  middleware.validateSchema(fabricanteSchema),
+  middleware.validateId(Fabricante),
   fabricanteController.updateFabricante
 );
 manufacturerRoutes.delete(
   "/:id",
-  middleware.validateId,
+  middleware.validateId(Fabricante),
   fabricanteController.deleteFabricante
 );
 manufacturerRoutes.get(
   "/:id/productos",
-  middleware.validateId,
+  middleware.validateId(Fabricante),
   fabricanteController.getProductosByFabricanteId
 );
 

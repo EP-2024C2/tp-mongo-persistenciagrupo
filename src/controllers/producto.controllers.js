@@ -12,7 +12,7 @@ const getProductos = async (req, res) => {
 const getProductoById = async (req, res) => {
   try {
     const { id } = req.params;
-    const producto = await Producto.findByPk(id);
+    const producto = await Producto.findById(id);
     res.status(200).json(producto);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -37,7 +37,7 @@ const updateProducto = async (req, res) => {
   try {
     const { id } = req.params;
     const { nombre, descripcion, precio } = req.body;
-    const producto = await Producto.findByPk(id);
+    const producto = await Producto.findById(id);
     await producto.update({ nombre, descripcion, precio });
     res.status(200).json(producto);
   } catch (error) {
@@ -48,7 +48,7 @@ const updateProducto = async (req, res) => {
 const deleteProducto = async (req, res) => {
   try {
     const { id } = req.params;
-    const producto = await Producto.findByPk(id);
+    const producto = await Producto.findById(id);
     await producto.destroy();
     res.status(200).json({ message: "Producto eliminado correctamente" });
   } catch (error) {
@@ -60,8 +60,8 @@ const createProductoFabricante = async (req, res) => {
   try {
     const { id } = req.params;
     const { fabricanteId } = req.body;
-    const producto = await Producto.findByPk(id);
-    const fabricante = await Fabricante.findByPk(fabricanteId);
+    const producto = await Producto.findById(id);
+    const fabricante = await Fabricante.findById(fabricanteId);
     await producto.addFabricante(fabricante);
     res.status(201).json({ message: "Asociación creada correctamente" });
   } catch (error) {
@@ -72,7 +72,7 @@ const createProductoFabricante = async (req, res) => {
 const getProductoFabricantes = async (req, res) => {
   try {
     const { id } = req.params;
-    const producto = await Producto.findByPk(id, {
+    const producto = await Producto.findById(id, {
       include: {
         model: Fabricante,
         as: "fabricantes",
@@ -88,8 +88,8 @@ const createProductoComponente = async (req, res) => {
   try {
     const { id } = req.params;
     const { componenteId } = req.body;
-    const producto = await Producto.findByPk(id);
-    const componente = await Componente.findByPk(componenteId);
+    const producto = await Producto.findById(id);
+    const componente = await Componente.findById(componenteId);
     await producto.addComponente(componente);
     res.status(201).json({ message: "Asociación creada correctamente" });
   } catch (error) {
@@ -100,7 +100,7 @@ const createProductoComponente = async (req, res) => {
 const getProductoComponentes = async (req, res) => {
   try {
     const { id } = req.params;
-    const producto = await Producto.findByPk(id, {
+    const producto = await Producto.findById(id, {
       include: Componente
     });
     res.status(200).json(producto);

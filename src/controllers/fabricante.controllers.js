@@ -11,7 +11,7 @@ const getAllFabricantes = async (req, res) => {
 
 const getFabricanteById = async (req, res) => {
   try {
-    const fabricante = await Fabricante.findByPk(req.params.id);
+    const fabricante = await Fabricante.findById(req.params.id);
     res.json(fabricante);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -30,7 +30,7 @@ const createFabricante = async (req, res) => {
 
 const updateFabricante = async (req, res) => {
   try {
-    const fabricante = await Fabricante.findByPk(req.params.id);
+    const fabricante = await Fabricante.findById(req.params.id);
     await producto.update(req.body);
     res.json(fabricante);
   } catch (error) {
@@ -41,7 +41,7 @@ const updateFabricante = async (req, res) => {
 const deleteFabricante = async (req, res) => {
   try {
     const { id } = req.params;
-    const fabricante = await Fabricante.findByPk(id);
+    const fabricante = await Fabricante.findById(id);
     await fabricante.destroy();
     res.json({ message: "Fabricante eliminado" });
   } catch (error) {
@@ -51,7 +51,7 @@ const deleteFabricante = async (req, res) => {
 
 const getProductosByFabricanteId = async (req, res) => {
   try {
-    const fabricante = await Fabricante.findByPk(req.params.id, {
+    const fabricante = await Fabricante.findById(req.params.id, {
       include: Producto,
       as: "productos",
     });

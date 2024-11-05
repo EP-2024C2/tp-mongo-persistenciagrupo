@@ -1,10 +1,12 @@
+const { mongoose } = require("../config/database");
+
 const validateId = (Model) => {
   return async (req, res, next) => {
     try {
       const { id } = req.params;
-      const model = await Model.findByPk(id);
-      const modelName =
-        Model.modelName || (Model.options.name && Model.options.name.singular);
+      const _id = new mongoose.Types.ObjectId(+id);
+      const model = await Model.findById(_id);
+      const modelName = Model.modelName;
 
       if (!model) {
         return res
@@ -13,8 +15,10 @@ const validateId = (Model) => {
       }
 
       req.modelo = model;
+      req.params.id = _id;
       next();
     } catch (error) {
+      console.log(error);
       res.status(500).json({
         msg: "Error del servidor",
       });
