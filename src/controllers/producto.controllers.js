@@ -1,4 +1,5 @@
 const { Producto, Fabricante, Componente } = require("../models");
+const mongoose = require("mongoose");
 
 const getProductos = async (req, res) => {
   try {
@@ -12,7 +13,41 @@ const getProductos = async (req, res) => {
 const getProductoById = async (req, res) => {
   try {
     const { id } = req.params;
-    const producto = await Producto.findById(id);
+    const producto = await Producto.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      {
+        $lookup: {
+          from: "componentes",
+          localField: "componentes",
+          foreignField: "_id",
+          as: "componentes",
+        },
+      },
+      {
+        $lookup: {
+          from: "fabricantes",
+          localField: "fabricantes",
+          foreignField: "_id",
+          as: "fabricante",
+        },
+      },
+      {
+        $project: {
+          nombre: 1,
+          descripcion: 1,
+          precio: 1,
+          componentes: {
+            nombre: 1,
+            descripcion: 1,
+          },
+          fabricante: {
+            nombre: 1,
+            direccion: 1,
+            numeroContacto: 1,
+          },
+        },
+      },
+    ]);
     res.status(200).json(producto);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -72,12 +107,29 @@ const createProductoFabricante = async (req, res) => {
 const getProductoFabricantes = async (req, res) => {
   try {
     const { id } = req.params;
-    const producto = await Producto.findById(id, {
-      include: {
-        model: Fabricante,
-        as: "fabricantes",
+    const producto = await Producto.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      {
+        $lookup: {
+          from: "fabricantes",
+          localField: "fabricantes",
+          foreignField: "_id",
+          as: "fabricantes",
+        },
       },
-    });
+      {
+        $project: {
+          nombre: 1,
+          descripcion: 1,
+          precio: 1,
+          fabricantes: {
+            nombre: 1,
+            direccion: 1,
+            numeroContacto: 1,
+          },
+        },
+      },
+    ]);
     res.status(200).json(producto);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -100,9 +152,28 @@ const createProductoComponente = async (req, res) => {
 const getProductoComponentes = async (req, res) => {
   try {
     const { id } = req.params;
-    const producto = await Producto.findById(id, {
-      include: Componente
-    });
+    const producto = await Producto.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      {
+      $lookup: {
+        from: "componentes",
+        localField: "componentes",
+        foreignField: "_id",
+        as: "componentes",
+      },
+      },
+      {
+      $project: {
+        nombre: 1,
+        descripcion: 1,
+        precio: 1,
+        componentes: {
+        nombre: 1,
+        descripcion: 1,
+        },
+      },
+      },
+    ]);
     res.status(200).json(producto);
   } catch (error) {
     res.status(500).json({ error: error.message });

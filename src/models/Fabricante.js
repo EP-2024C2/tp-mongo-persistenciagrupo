@@ -19,21 +19,17 @@ const fabricanteSchema = new mongoose.Schema({
   },
   productos: [
     {
-      productoId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Producto",
-        required: true,
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-      },
-      updatedAt: {
-        type: Date,
-        default: Date.now,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Producto",
     },
   ],
+});
+
+fabricanteSchema.set("toJSON", {
+  transform: (_, ret) => {
+    delete ret.__v;
+    delete ret._id;
+  },
 });
 
 const Fabricante = mongoose.model("Fabricante", fabricanteSchema);

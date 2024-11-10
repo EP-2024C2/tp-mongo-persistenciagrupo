@@ -5,15 +5,7 @@ const fabricanteSchema = Joi.object({
   direccion: Joi.string().required(),
   numeroContacto: Joi.string().required(),
   pathImgPerfil: Joi.string().optional(),
-  productos: Joi.array()
-    .items(
-      Joi.object({
-        productoId: Joi.string().required(),
-        createdAt: Joi.date().default(Date.now),
-        updatedAt: Joi.date().default(Date.now),
-      })
-    )
-    .optional(),
+  productos: Joi.array().items(Joi.string().required()).optional(),
 });
 
 module.exports = fabricanteSchema;

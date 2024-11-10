@@ -37,3 +37,7 @@ Este proyecto contiene una API de gestión de productos. A continuación, se det
 ## DER
 
 ![DER](DER-1.png)
+
+## Enfoque utilizado
+
+- Decidimos utilizar el enfoque relación referenciada para aquellas relacion de muchos a muchos, como por ejemplo productos-fabricantes o productos-componentes.

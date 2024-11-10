@@ -1,11 +1,6 @@
 const { mongoose } = require("../config/database");
 
 const ComponenteSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
   nombre: {
     type: String,
     required: true,
@@ -15,21 +10,17 @@ const ComponenteSchema = new mongoose.Schema({
   },
   productos: [
     {
-      productoId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Producto",
-        required: true,
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-      },
-      updatedAt: {
-        type: Date,
-        default: Date.now,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Producto",
     },
   ],
+});
+
+ComponenteSchema.set("toJSON", {
+  transform: (_, ret) => {
+    delete ret.__v;
+    delete ret._id;
+  },
 });
 
 const Componente = mongoose.model("Componente", ComponenteSchema);
