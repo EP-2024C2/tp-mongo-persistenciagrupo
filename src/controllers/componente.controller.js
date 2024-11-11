@@ -23,11 +23,9 @@ const getComponenteById = async (req, res) => {
       },
       {
         $project: {
-          _id: 0,
           nombre: 1,
           descripcion: 1,
           productos: {
-            _id: 0,
             nombre: 1,
             descripcion: 1,
             precio: 1,
@@ -88,12 +86,10 @@ const getProductosByComponenteId = async (req, res) => {
       },
       {
         $project: {
-          _id: 0,
           nombre: 1,
           descripcion: 1,
           precio: 1,
           componente: {
-            _id: 0,
             nombre: 1,
             descripcion: 1,
           },

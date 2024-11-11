@@ -155,23 +155,23 @@ const getProductoComponentes = async (req, res) => {
     const producto = await Producto.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(id) } },
       {
-      $lookup: {
-        from: "componentes",
-        localField: "componentes",
-        foreignField: "_id",
-        as: "componentes",
-      },
-      },
-      {
-      $project: {
-        nombre: 1,
-        descripcion: 1,
-        precio: 1,
-        componentes: {
-        nombre: 1,
-        descripcion: 1,
+        $lookup: {
+          from: "componentes",
+          localField: "componentes",
+          foreignField: "_id",
+          as: "componentes",
         },
       },
+      {
+        $project: {
+          nombre: 1,
+          descripcion: 1,
+          precio: 1,
+          componentes: {
+            nombre: 1,
+            descripcion: 1,
+          },
+        },
       },
     ]);
     res.status(200).json(producto);

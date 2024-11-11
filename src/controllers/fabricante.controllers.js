@@ -23,12 +23,10 @@ const getFabricanteById = async (req, res) => {
       },
       {
         $project: {
-          _id: 0,
           nombre: 1,
           direccion: 1,
           numeroContacto: 1,
           productos: {
-            _id: 0,
             nombre: 1,
             descripcion: 1,
             precio: 1,
@@ -87,10 +85,8 @@ const getProductosByFabricanteId = async (req, res) => {
       },
       {
         $project: {
-          _id: 0,
           nombre: 1,
           productos: {
-            _id: 0,
             nombre: 1,
             descripcion: 1,
             precio: 1,
