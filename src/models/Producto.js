@@ -1,33 +1,36 @@
 const { mongoose } = require("../config/database");
 
-const productoSchema = new mongoose.Schema({
-  nombre: {
-    type: String,
-    required: true,
-  },
-  descripcion: {
-    type: String,
-  },
-  precio: {
-    type: Number,
-    required: true,
-  },
-  pathImg: {
-    type: String,
-  },
-  fabricantes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Fabricante",
+const productoSchema = new mongoose.Schema(
+  {
+    nombre: {
+      type: mongoose.Schema.Types.String,
+      required: true,
     },
-  ],
-  componentes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Componente",
+    descripcion: {
+      type: mongoose.Schema.Types.String,
     },
-  ],
-});
+    precio: {
+      type: mongoose.Schema.Types.Number,
+      required: true,
+    },
+    pathImg: {
+      type: mongoose.Schema.Types.String,
+    },
+    fabricantes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Fabricante",
+      },
+    ],
+    componentes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Componente",
+      },
+    ],
+  },
+  { strict: false }
+);
 
 productoSchema.set("toJSON", {
   transform: (_, ret) => {

@@ -1,5 +1,5 @@
 const { Producto, Fabricante, Componente } = require("../models");
-const mongoose = require("mongoose");
+const { mongoose } = require("./../config/database");
 
 const getProductos = async (req, res) => {
   try {
@@ -28,7 +28,7 @@ const getProductoById = async (req, res) => {
           from: "fabricantes",
           localField: "fabricantes",
           foreignField: "_id",
-          as: "fabricante",
+          as: "fabricantes",
         },
       },
       {
@@ -56,11 +56,12 @@ const getProductoById = async (req, res) => {
 
 const createProducto = async (req, res) => {
   try {
-    const { nombre, descripcion, precio } = req.body;
+    const { nombre, descripcion, precio, pathImg } = req.body;
     const nuevoProducto = await Producto.create({
       nombre,
       descripcion,
       precio,
+      pathImg,
     });
     res.status(201).json(nuevoProducto);
   } catch (error) {
@@ -96,9 +97,10 @@ const createProductoFabricante = async (req, res) => {
     const { id } = req.params;
     const { fabricanteId } = req.body;
     const producto = await Producto.findById(id);
-    const fabricante = await Fabricante.findById(fabricanteId);
-    await producto.addFabricante(fabricante);
-    res.status(201).json({ message: "Asociación creada correctamente" });
+    const fabricante = await Fabricante.find({ _id: { $in: fabricanteId } });
+    producto.fabricantes.push(...fabricante.map((f) => f._id));
+    await producto.save();
+    res.status(201).json({ message: "Fabricante agregado correctamente" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -141,8 +143,9 @@ const createProductoComponente = async (req, res) => {
     const { id } = req.params;
     const { componenteId } = req.body;
     const producto = await Producto.findById(id);
-    const componente = await Componente.findById(componenteId);
-    await producto.addComponente(componente);
+    const componentes = await Componente.find({ _id: { $in: componenteId } });
+    producto.componentes.push(...componentes.map((f) => f._id));
+    await producto.save();
     res.status(201).json({ message: "Asociación creada correctamente" });
   } catch (error) {
     res.status(400).json({ error: error.message });

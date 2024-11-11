@@ -2,7 +2,7 @@ const { Router } = require("express");
 const fabricanteController = require("../controllers/fabricante.controllers");
 const middleware = require("../middlewares");
 const { Fabricante } = require("../models");
-const fabricanteSchema = require("../schemas/producto.schema");
+const fabricanteSchema = require("../schemas/fabricante.schema");
 
 const manufacturerRoutes = Router();
 

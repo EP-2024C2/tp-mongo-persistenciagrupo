@@ -1,4 +1,5 @@
 const { Fabricante, Producto } = require("../models");
+const { mongoose } = require("../config/database");
 
 const getAllFabricantes = async (req, res) => {
   try {
@@ -14,23 +15,11 @@ const getFabricanteById = async (req, res) => {
     const fabricante = await Fabricante.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(req.params.id) } },
       {
-        $lookup: {
-          from: "productos",
-          localField: "_id",
-          foreignField: "fabricante",
-          as: "productos",
-        },
-      },
-      {
         $project: {
+          _id: 0,
           nombre: 1,
           direccion: 1,
           numeroContacto: 1,
-          productos: {
-            nombre: 1,
-            descripcion: 1,
-            precio: 1,
-          },
         },
       },
     ]);
@@ -53,7 +42,7 @@ const createFabricante = async (req, res) => {
 const updateFabricante = async (req, res) => {
   try {
     const fabricante = await Fabricante.findById(req.params.id);
-    await producto.update(req.body);
+    await fabricante.update(req.body);
     res.json(fabricante);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -79,12 +68,13 @@ const getProductosByFabricanteId = async (req, res) => {
         $lookup: {
           from: "productos",
           localField: "_id",
-          foreignField: "fabricante",
+          foreignField: "fabricantes",
           as: "productos",
         },
       },
       {
         $project: {
+          _id: 0,
           nombre: 1,
           productos: {
             nombre: 1,

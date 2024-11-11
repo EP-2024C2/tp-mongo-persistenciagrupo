@@ -30,7 +30,6 @@ productRoutes.delete(
 );
 productRoutes.post(
   "/:id/fabricantes",
-  middleware.validateSchema(productoSchema),
   middleware.validateId(Producto),
   productoController.createProductoFabricante
 );
@@ -41,7 +40,6 @@ productRoutes.get(
 );
 productRoutes.post(
   "/:id/componentes",
-  middleware.validateSchema(productoSchema),
   middleware.validateId(Producto),
   productoController.createProductoComponente
 );

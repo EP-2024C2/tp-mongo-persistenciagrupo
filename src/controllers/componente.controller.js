@@ -1,4 +1,5 @@
-const { Componente, Producto } = require("../models");
+const { Componente } = require("../models");
+const { mongoose } = require("../config/database");
 
 const getComponentes = async (req, res) => {
   try {
@@ -14,22 +15,10 @@ const getComponenteById = async (req, res) => {
     const componente = await Componente.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(req.params.id) } },
       {
-        $lookup: {
-          from: "productos",
-          localField: "_id",
-          foreignField: "componente",
-          as: "productos",
-        },
-      },
-      {
         $project: {
+          _id: 0,
           nombre: 1,
           descripcion: 1,
-          productos: {
-            nombre: 1,
-            descripcion: 1,
-            precio: 1,
-          },
         },
       },
     ]);
@@ -74,29 +63,29 @@ const deleteComponente = async (req, res) => {
 
 const getProductosByComponenteId = async (req, res) => {
   try {
-    const productos = await Producto.aggregate([
-      { $match: { componente: new mongoose.Types.ObjectId(req.params.id) } },
+    const componente = await Componente.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(req.params.id) } },
       {
         $lookup: {
-          from: "componentes",
-          localField: "componente",
-          foreignField: "_id",
-          as: "componente",
+          from: "productos",
+          localField: "_id",
+          foreignField: "componentes",
+          as: "productos",
         },
       },
       {
         $project: {
+          _id: 0,
           nombre: 1,
           descripcion: 1,
-          precio: 1,
-          componente: {
+          productos: {
             nombre: 1,
             descripcion: 1,
           },
         },
       },
     ]);
-    res.json(productos);
+    res.json(componente);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

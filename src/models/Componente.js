@@ -1,20 +1,17 @@
 const { mongoose } = require("../config/database");
 
-const ComponenteSchema = new mongoose.Schema({
-  nombre: {
-    type: String,
-    required: true,
-  },
-  descripcion: {
-    type: String,
-  },
-  productos: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Producto",
+const ComponenteSchema = new mongoose.Schema(
+  {
+    nombre: {
+      type: mongoose.Schema.Types.String,
+      required: true,
     },
-  ],
-});
+    descripcion: {
+      type: mongoose.Schema.Types.String,
+    },
+  },
+  { strict: false }
+);
 
 ComponenteSchema.set("toJSON", {
   transform: (_, ret) => {
