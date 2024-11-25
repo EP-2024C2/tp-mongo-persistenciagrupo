@@ -3,7 +3,10 @@ const { mongoose } = require("./../config/database");
 
 const getProductos = async (req, res) => {
   try {
-    const productos = await Producto.find();
+    const productos = await Producto.find(
+      {},
+      { _id: 0, nombre: 1, descripcion: 1, precio: 1, pathImg: 1 }
+    );
     res.status(200).json(productos);
   } catch (error) {
     res.status(500).json({ error: error.message });

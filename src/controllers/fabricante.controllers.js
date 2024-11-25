@@ -3,7 +3,10 @@ const { mongoose } = require("../config/database");
 
 const getAllFabricantes = async (req, res) => {
   try {
-    const fabricantes = await Fabricante.find();
+    const fabricantes = await Fabricante.find(
+      {},
+      { _id: 0, nombre: 1, direccion: 1, numeroContacto: 1, pathImgPerfil: 1 }
+    );
     res.json(fabricantes);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -41,7 +44,9 @@ const createFabricante = async (req, res) => {
 
 const updateFabricante = async (req, res) => {
   try {
-    const fabricante = await Fabricante.findById(req.params.id);
+    const fabricante = await Fabricante.findById(req.params.id, 
+      { _id: 0, nombre: 1, direccion: 1, numeroContacto: 1, pathImgPerfil: 1 }
+    );
     await fabricante.update(req.body);
     res.json(fabricante);
   } catch (error) {

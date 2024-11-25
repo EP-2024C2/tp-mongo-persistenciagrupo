@@ -3,7 +3,10 @@ const { mongoose } = require("../config/database");
 
 const getComponentes = async (req, res) => {
   try {
-    const componentes = await Componente.find();
+    const componentes = await Componente.find(
+      {},
+      { _id: 0, nombre: 1, descripcion: 1 }
+    );
     res.json(componentes);
   } catch (error) {
     res.status(500).json({ message: error.message });
