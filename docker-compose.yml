@@ -19,10 +19,11 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://admin:admin1234@mongodb:27017/
       ME_CONFIG_BASICAUTH: "false"
   app:
+    build: .
     image: test/tpmongo:1.0
     ports:
-      - 3000:3000
+      - 3001:3001
     environment:
-      MONGO_URL: mongodb://admin:admin1234@mongodb:27017/tu_base_de_datos
+      MONGO_URL: mongodb://admin:admin1234@mongodb:27017/seriesMongo
     depends_on:
       - mongodb
